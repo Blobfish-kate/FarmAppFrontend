@@ -1,0 +1,34 @@
+body {
+	margin: 5px;
+}
+
+.sidebar {
+	border: 2px solid black;
+	margin-top: 80px;
+	padding: 5px;
+	background-color: #ffdd99;
+}
+
+.selections .badge{
+	margin-right: 3px;
+}
+
+
+.farmSummaryContainer img {
+   max-height: 100%;
+   max-width: 200px;
+   object-fit: contain;
+}
+
+.farmSummaryContainer:hover{
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+  -moz-box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+}
+
+.farmSummaryContainer {
+	margin-top: 80px;
+	padding: 5px;
+    border: 1px solid black;
+    text-align: center;
+}
