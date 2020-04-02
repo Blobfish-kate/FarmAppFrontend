@@ -2,6 +2,10 @@ body {
 	margin: 5px;
 }
 
+.mainContent {
+	margin-top: 80px;
+}
+
 .sidebar {
 	border: 2px solid black;
 	margin-top: 80px;

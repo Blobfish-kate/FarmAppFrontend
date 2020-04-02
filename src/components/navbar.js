@@ -1,4 +1,5 @@
 import React from "react"
+import { NavLink } from 'react-router-dom'
 
 function Navbar() {
 	return (
@@ -9,10 +10,10 @@ function Navbar() {
 				<div className="collapse navbar-collapse" id="navbarCollapse">
 					<ul className="navbar-nav mr-auto">
 						<li className="nav-item active">
-							<a className="nav-link" href="#">Farm List<span className="sr-only">(current)</span></a>
+							<NavLink to="/" className="nav-link">Farm List</NavLink>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="#">Create profile</a>
+							<NavLink to="/create-profile" className="nav-link">Create profile</NavLink>
 						</li>
 					</ul>
 					<ul className="nav navbar-nav ml-auto">

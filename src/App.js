@@ -1,10 +1,12 @@
 import React from 'react';
-import { BrowserRounter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/FarmList/navbar'
+import Navbar from './components/navbar'
 import FarmList from './components/FarmList/FarmList'
+import CreateProfile from './components/CreateProfile/CreateProfile'
+import Err from  './components/Err'
 
 
 class App extends React.Component {
@@ -16,24 +18,30 @@ class App extends React.Component {
     };
   }
 
-  callAPI() {
-    fetch("http://localhost:9000")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res}))
-      .catch(err => err)
-  }
+  // callAPI() {
+  //   fetch("http://localhost:9000")
+  //     .then(res => res.text())
+  //     .then(res => this.setState({ apiResponse: res}))
+  //     .catch(err => err)
+  // }
 
-  componentDidMount() {
-    this.callAPI();
-  }
+  // componentDidMount() {
+  //   this.callAPI();
+  // }
 
 
   render() {
     return (
-      <div>
-        <Navbar />
-        <FarmList />
-      </div>
+      <BrowserRouter>
+        <div>
+          <Navbar />
+            <Switch>
+              <Route path="/" component={FarmList} exact/>
+              <Route path="/create-profile" component={CreateProfile} exact/>
+              <Route component={Err}/>
+            </Switch>
+        </div>
+      </BrowserRouter>
     )
   }
 }
