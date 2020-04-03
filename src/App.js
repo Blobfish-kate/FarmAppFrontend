@@ -6,7 +6,7 @@ import './App.css';
 import Navbar from './components/navbar'
 import FarmList from './components/FarmList/FarmList'
 import CreateProfile from './components/CreateProfile/CreateProfile'
-import Err from  './components/Err'
+import FarmForm from './components/Forms/FarmForm'
 
 
 class App extends React.Component {
@@ -38,9 +38,9 @@ class App extends React.Component {
             <Switch>
               <Route path="/" component={FarmList} exact/>
               <Route path="/create-profile" component={CreateProfile} exact/>
-              <Route component={Err}/>
             </Switch>
         </div>
+        <Route path="/create-profile/farm" component={FarmForm} />
       </BrowserRouter>
     )
   }

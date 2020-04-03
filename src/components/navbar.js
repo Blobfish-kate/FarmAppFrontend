@@ -5,7 +5,7 @@ function Navbar() {
 	return (
 		<nav className="navbar fixed-top navbar-expand-md navbar-light bg-light">
 				<div className="navbar-header">
-					<a className="navbar-brand" href="#">FarmApp</a>
+					<NavLink to="/" className="navbar-brand">FarmApp</NavLink>
 				</div>
 				<div className="collapse navbar-collapse" id="navbarCollapse">
 					<ul className="navbar-nav mr-auto">

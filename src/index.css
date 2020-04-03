@@ -36,3 +36,10 @@ body {
     border: 1px solid black;
     text-align: center;
 }
+
+.profileForms {
+	border: 2px solid black;
+	width: 80%;
+	margin: 0 auto;
+	padding: 10px 80px;
+}
