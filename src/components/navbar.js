@@ -1,13 +1,17 @@
 import React from "react"
+
 import { NavLink } from 'react-router-dom'
 
-function Navbar() {
+import Navbar from "react-bootstrap/Navbar"
+import Nav from "react-bootstrap/Nav"
+
+function Navigation() {
 	return (
-		<nav className="navbar fixed-top navbar-expand-md navbar-light bg-light">
-				<div className="navbar-header">
+		<Navbar>
+				<Navbar.Brand>
 					<NavLink to="/" className="navbar-brand">FarmApp</NavLink>
-				</div>
-				<div className="collapse navbar-collapse" id="navbarCollapse">
+				</Navbar.Brand>
+				<Nav className="collapse navbar-collapse">
 					<ul className="navbar-nav mr-auto">
 						<li className="nav-item active">
 							<NavLink to="/" className="nav-link">Farm List</NavLink>
@@ -21,9 +25,9 @@ function Navbar() {
 							<a className="nav-link" href="#">Login</a>
 						</li>
 					</ul>
-	  			</div>
-  		</nav>
+	  			</Nav>
+  		</Navbar>
 	)
 }
 
-export default Navbar
+export default Navigation

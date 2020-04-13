@@ -1,4 +1,6 @@
 import React from "react"
+import axios from "axios"
+
 import TextInput from './FarmListComponents/TextInput'
 import Checkbox from './FarmListComponents/Checkbox'
 import TextArea from './FarmListComponents/TextArea'
@@ -12,13 +14,14 @@ class FarmForm extends React.Component {
 		super(props)
 		this.state = {
 			newFarm: {
+				farmID: "",
 				farmName: "", 
-				farmAddress: {},
+				farmAddress: null,
 				farmDescription: "",
-				farmCrops: ["Trees"],
+				farmCrops: [],
 				farmWorkType: [],
 				farmAvailability: [],
-				farmImage: ""
+				farmImage: null
 			},
 			cropOptions: ["Trees", "Plants", "Grains", "Dairy", "Meat", "Eggs"],
 			workOptions: ["Fruit picking", "Manual labour", "Animal husbandry", "Other"],
@@ -37,12 +40,10 @@ class FarmForm extends React.Component {
 	}
 
 	handleCheckbox(event) {
-		console.log(event.target)
 		//Name is eg farmCrops, value is eg Trees
 		const { name, value } = event.target
 		let optionsArr = [...this.state.newFarm[name]]
 		const index = optionsArr.indexOf(value)
-		console.log(optionsArr, index)
 		//If state of farmCrops does not include Trees, add Trees
 		if(index > -1) {
 			optionsArr = [...optionsArr.slice(0, index), ...optionsArr.slice(index + 1)]
@@ -54,28 +55,67 @@ class FarmForm extends React.Component {
 	}
 
 	handleImage(event) {
-		const { name, files } = event.target
-		// const files = event.target.files
-		// const reader = new FileReader()
-		// reader.readAsDataURL(files[0])
-		// reader.onload = (event) => {
-		// 	this.setState({newFarm: {...this.state.newFarm, 'farmImage' : event.target.result}})
-		// }
-		this.setState({newFarm: {...this.state.newFarm, [name] : files}})
+		// this.setState({
+		// 	newFarm: {...this.state.newFarm, 
+		// 		[name] : [files[0]] }
+		// })
+		const { name } = event.target
+
+		let imageFormObj = new FormData()
+
+		imageFormObj.append("imageName", "multer-image-" + Date.now())
+		imageFormObj.append("imageData", event.target.files[0])
+
+		console.log(imageFormObj)
+
+		this.setState({
+			newFarm: {...this.state.newFarm, 
+				[name] : URL.createObjectURL(event.target.files[0])
+			}
+		})
+
+		axios.post('http://localhost:9000/imageUpload/upload', imageFormObj)
+			.then((data) => {
+				if (data.data.success) {
+					alert("Image has been successfully uploaded using multer")
+				}
+			})
+			.catch((err) => {
+				alert("Error while uploading image using multer: " + err)
+			})
 	}
 
 	handleAddressChange(event) {
 		console.log(event)
 	}
 
-	handleSubmit() {
-		alert("Submit handled")
+	handleSubmit(event) {
+		event.preventDefault()
+
+		const farmObject = {
+			farmName: this.state.newFarm.farmName,
+			farmDescription: this.state.newFarm.farmDescription,
+			farmCrops: this.state.newFarm.farmCrops,
+			farmImage: this.state.newFarm.farmImage,
+			farmAvailability: this.state.newFarm.farmAvailability,
+			farmWorkType: this.state.newFarm.farmWorkType
+		}
+
+		axios.post('http://localhost:9000/create-profile/farm', farmObject)
+			.then(res => {
+				this.setState({
+					newFarm: {...this.state.newFarm, 
+						'farmID' : res.data._id
+					}
+				})
+			})
+		
 	}
 
 	render() {
 		return (
 			<main className="mainContent">
-				<form className="profileForms" method="post" 
+				<form className="profileForms"
 					id="farmProfileForm" 
 					onSubmit={this.handleSubmit}>
 					<FormTitle text="Create a profile for your farm" />
@@ -118,8 +158,9 @@ class FarmForm extends React.Component {
 					<hr />
 					<FileUpload
 						name={'farmImage'}
-						onChange={this.handleImage}
+						onChange={(event) => this.handleImage(event)}
 						accept=".jpeg, .png"
+						id={'farmPic'}
 					/>
 					<hr />
 					<Button class="btn btn-primary" type="submit" text="Create Farm Profile"/>

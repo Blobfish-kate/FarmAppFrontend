@@ -1,12 +1,15 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import logo from './logo.svg';
-import './App.css';
-import Navbar from './components/navbar'
+import 'bootstrap/dist/css/bootstrap.css';
+
+import Navigation from './components/navbar'
+import Err from './components/Err'
 import FarmList from './components/FarmList/FarmList'
 import CreateProfile from './components/CreateProfile/CreateProfile'
 import FarmForm from './components/Forms/FarmForm'
+import FarmerForm from './components/Forms/FarmerForm'
+
 
 
 class App extends React.Component {
@@ -32,16 +35,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <div>
-          <Navbar />
-            <Switch>
-              <Route path="/" component={FarmList} exact/>
-              <Route path="/create-profile" component={CreateProfile} exact/>
-            </Switch>
-        </div>
-        <Route path="/create-profile/farm" component={FarmForm} />
-      </BrowserRouter>
+      <div>
+        <Navigation />
+          <Switch>
+            <Route path="/" component={FarmList} exact/>
+            <Route path="/create-profile" component={CreateProfile} exact/>
+            <Route path="/create-profile/farm" component={FarmForm} />
+            <Route path="/create-profile/farmer" component={FarmerForm} />
+            <Route component={Err} />
+          </Switch>
+      </div>
     )
   }
 }

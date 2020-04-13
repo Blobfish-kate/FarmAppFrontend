@@ -7,9 +7,9 @@ function FarmSummary(props) {
 					<img src={props.farm.image} alt="Farm"/>
 				</div>
 				<div className="caption col-md-9 row-sm-9">
-					<h2 className="title">{props.farm.name}</h2>
-					<p className="description">{props.farm.description}</p>
-					<p className="crops">We grow: {props.farm.crops.map(item => <span key={item}>{item}  </span>)} </p>
+					<h2 className="title">{props.farm.farmName}</h2>
+					<p className="description">{props.farm.farmDescription}</p>
+					<p className="crops">We grow: {props.farm.farmCrops.map(item => <span key={item}>{item}  </span>)} </p>
 				</div>
 			</div>
 	)

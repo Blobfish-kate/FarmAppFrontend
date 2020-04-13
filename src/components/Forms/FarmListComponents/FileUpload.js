@@ -7,7 +7,7 @@ function FileUpload(props) {
 			<br />
 			<input 
 				type="file"
-				id="farmPic"
+				id={props.id}
 				accept={props.accept}
 				name={props.name} 
 				onChange={props.onChange} />
