@@ -1,10 +1,12 @@
 import React from "react"
 import { withRouter } from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
+import { Redirect } from "react-router"
 import axios from "axios"
 
-import FarmFormContainer from "./FarmFormContainer"
+import FarmFormContainer from './FarmFormContainer'
 
-class FarmForm extends React.Component {
+class EditFarmForm extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -17,8 +19,7 @@ class FarmForm extends React.Component {
 				farmWorkType: [],
 				farmAvailability: [],
 				farmImage: null
-			},
-			farmImageURL: "",
+			}, 
 			cropOptions: ["Trees", "Plants", "Grains", "Dairy", "Meat", "Eggs"],
 			workOptions: ["Fruit picking", "Manual labour", "Animal husbandry", "Other"],
 			availabilityOptions: ["Full-time", "Part-time (weekdays)", "Part-time (weekends)"]
@@ -30,6 +31,33 @@ class FarmForm extends React.Component {
 		this.handleAddressChange = this.handleAddressChange.bind(this)
 	}
 
+	//componentDidMount to get farm from db
+	componentDidMount() {
+		const id = this.props.match.params.id
+		axios.get('http://localhost:9000/' + id + '/edit')
+			.then(res => {
+				let foundFarm = res.data.farm[0]
+				let foundImage = res.data.image[0]
+				this.setState({
+					newFarm: {
+						farmID: id,
+						farmName: foundFarm.farmName, 
+						farmAddress: foundFarm.farmAddress,
+						farmDescription:foundFarm.farmDescription,
+						farmCrops: foundFarm.farmCrops,
+						farmWorkType: foundFarm.farmWorkType,
+						farmAvailability: foundFarm.farmAvailability,
+						farmImage: foundImage
+					},
+					farmImageURL: "",
+					farmImageId: foundImage._id
+				})
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	}
+	
 	handleTextInput(event) {
 		const { name, value } = event.target
 		this.setState({ newFarm: {...this.state.newFarm, [name] : value}})
@@ -57,6 +85,7 @@ class FarmForm extends React.Component {
 		imageFormObj.append("imageName", "multer-image-" + Date.now()) 
 		imageFormObj.append("imageData", event.target.files[0])
 
+
 		this.setState({
 			newFarm: {...this.state.newFarm, 
 				[name] : imageFormObj
@@ -80,43 +109,30 @@ class FarmForm extends React.Component {
 			farmAvailability: this.state.newFarm.farmAvailability,
 			farmWorkType: this.state.newFarm.farmWorkType
 		}
-
 		const imageObj = this.state.newFarm.farmImage
+		const id = this.props.match.params.id
+		const imageId = this.state.farmImageId
 
-		axios.post('http://localhost:9000/create-profile/farm', farmObject)
-			.then(res => {
-				this.setState({
-					newFarm: {...this.state.newFarm, 
-					farmID : res.data._id
-					}
-				})
-				const farmID = this.state.newFarm.farmID
-				if(!imageObj) {
-					this.props.history.push('/')
+		axios.put('http://localhost:9000/' + id, farmObject)
+			.then(() => {
+				if(!this.state.farmImageURL) {
+					this.props.history.push('/' + id)
 				} else {
-					imageObj.append("farmID", farmID)
-					axios.post('http://localhost:9000/imageUpload/upload', imageObj)
-					.then((data) => {
-						if (data.success) {
-							alert("Image has been successfully uploaded using multer")
-						}
-					})
-					.catch((err) => {
-						alert("Error while uploading image using multer: " + err)
-					})
-					.then(() => {
-						this.props.history.push('/')
-					})
+					axios.put(`http://localhost:9000/imageUpload/edit/${id}/${imageId}`, imageObj)
 				}
+			})
+			.then(this.props.history.push('/' + id))
+			.catch(err => {
+				alert("Error: " + err)
 			})
 	}
 
 	render() {
-		return (
-			<FarmFormContainer 
-				formTitle = {'Create a profile for your farm'}
-				buttonText = {'Create Farm Profile'}
-				imageText = {'Add an image to your profile'}
+		return(
+			<FarmFormContainer
+				formTitle = {'Edit Your Farm'}
+				buttonText = {`Update ${this.state.newFarm.farmName}`}
+				imageText = {'Edit your profile image'}
 				handleSubmit = {this.handleSubmit}
 				handleTextInput = {this.handleTextInput}
 				handleImage = {this.handleImage}
@@ -128,4 +144,4 @@ class FarmForm extends React.Component {
 	}
 }
 
-export default withRouter(FarmForm)
+export default withRouter(EditFarmForm)
