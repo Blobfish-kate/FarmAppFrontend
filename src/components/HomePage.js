@@ -2,6 +2,8 @@ import React from "react"
 import styled from "styled-components"
 import logo from "./images/logo.png"
 
+import '../stylesheets/variables.scss'
+
 const Container = styled.div`
     background-image: url("https://www.commondreams.org/sites/default/files/styles/cd_large/public/views-article/farms.jpeg?itok=cTmtRuzF");
     background-repeat: no-repeat;

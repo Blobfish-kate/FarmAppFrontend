@@ -17,8 +17,8 @@ function LoginComponent(props) {
                         type="text" 
                         name="username" 
                         placeholder="Enter username" 
-                        minlength="5"
-                        maxlength="20"
+                        minLength="5"
+                        maxLength="20"
                         onChange={props.handleChange}
                     />
                 </div>
@@ -29,8 +29,8 @@ function LoginComponent(props) {
                         type="password" 
                         name="password" 
                         placeholder="Password" 
-                        minlength="7"
-                        maxlength="20"
+                        minLength="7"
+                        maxLength="20"
                         onChange={props.handleChange}
                     />
                 </div>

@@ -7,10 +7,8 @@ class SignUp extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            user: {
-                username: "",
-                password: ""
-            }
+            username: "",
+            password: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -18,17 +16,26 @@ class SignUp extends React.Component {
 
     handleChange(event) {
         const { name, value } = event.target
-        this.setState({ user: {...this.state.user, [name] : value }})
+        this.setState({[name] : value })
     }
 
     handleSubmit(event) {
         event.preventDefault()
 
-        const userObject = this.state.user
-
-        axios.post('http://localhost:9000/user/signup', userObject)
+        axios.post('http://localhost:9000/user/signup', {
+            username: this.state.username,
+            password: this.state.password
+        })
             .then(res => {
-                console.log("Result: " + res.data)
+                console.log("Result: " + res)
+                if (!res.data.errmsg) {
+                    console.log("Successful sign up")
+                    this.setState({
+                        redirectTo: "/login"
+                    })
+                } else {
+                    console.log("Signup error")
+                }
             })
             .catch(err => {
                 throw new Error(err)

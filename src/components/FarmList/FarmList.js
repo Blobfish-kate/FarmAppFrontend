@@ -38,7 +38,7 @@ class FarmList extends React.Component{
 			)
 		return (
 		<div>
-			<h1> Welcome to FarmApp!</h1>
+			<h1> Welcome to FarmApp {this.props.user}!</h1>
 			<div className="d-flex flex-row ">
 	          <Sidebar className="col-3"/>
 	          <div className="d-flex flex-column align-self-center col-9 farmComponents">

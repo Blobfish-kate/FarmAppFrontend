@@ -19,7 +19,7 @@ class Sidebar extends React.Component {
 
 	render(){
 		return(
-					<div class="sidebar">
+					<div className="sidebar">
 						<h4>What kind of farm are you looking for?</h4>
 						<form>
 							<div className="form-group">

@@ -21,9 +21,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      apiResponse: "",
-      page: "FarmList"
+      loggedIn: false,
+      username: ""
     };
+    this.updateUser = this.updateUser.bind(this)
+  }
+
+  updateUser (user) {
+    this.setState(user)
   }
 
   render() {
@@ -32,9 +37,9 @@ class App extends React.Component {
         <Navigation />
           <Switch>
             <Route path="/" component={HomePage} exact/>
-            <Route path="/login" component={Login} exact />
+            <Route path="/login" render={() => <Login updateUser={this.updateUser} />} exact />
             <Route path="/signup" component={SignUp} exact />
-            <Route path="/farms" component={FarmList} exact/>
+            <Route path="/farms" render={() => <FarmList user={this.state.username} />} exact/>
             <Route path="/create-profile" component={CreateProfile} exact/>
             <Route path="/create-profile/farm" component={FarmForm} />
             <Route path="/create-profile/farmer" component={FarmerForm} />
